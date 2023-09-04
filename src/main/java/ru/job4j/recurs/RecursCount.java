@@ -1,5 +1,6 @@
 package ru.job4j.recurs;
 
+<<<<<<< HEAD
 import java.util.Arrays;
 
 public class RecursCount {
@@ -17,4 +18,7 @@ public class RecursCount {
 
     }
 
+=======
+public class RecursCount {
+>>>>>>> fix2
 }
