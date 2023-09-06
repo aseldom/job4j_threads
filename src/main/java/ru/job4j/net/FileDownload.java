@@ -19,7 +19,7 @@ public class FileDownload {
             while ((bytesRead = in.read(dataBuffer, 0, dataBuffer.length)) != -1) {
                 var downloadAt = System.nanoTime();
                 out.write(dataBuffer, 0, bytesRead);
-                System.out.println("Read 512 bytes : " + (System.nanoTime() - downloadAt) + " nano.");
+                System.out.println("Read 512 bytes : " + bytesRead + " = " + (System.nanoTime() - downloadAt) + " nano.");
             }
         } catch (IOException e) {
             e.printStackTrace();
