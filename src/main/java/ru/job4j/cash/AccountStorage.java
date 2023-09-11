@@ -8,21 +8,16 @@ import java.util.Optional;
 
 @ThreadSafe
 public class AccountStorage {
+
     @GuardedBy("this")
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-        accounts.put(account.id(), account);
-        return true;
+        return accounts.putIfAbsent(account.id(), account) == null;
     }
 
     public synchronized boolean update(Account account) {
-        boolean res = false;
-        if (accounts.containsKey(account.id())) {
-            accounts.put(account.id(), account);
-            res = true;
-        }
-        return res;
+        return accounts.replace(account.id(), account) != null;
     }
 
     public synchronized void delete(int id) {
@@ -35,19 +30,11 @@ public class AccountStorage {
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean res = false;
-        if (getById(fromId).isPresent() && getById(toId).isPresent()) {
-            int from = getById(fromId).get().amount();
-            int to = getById(toId).get().amount();
-            if (from >= amount) {
-                from -= amount;
-                to += amount;
-            } else {
-                to += from;
-                from = 0;
-            }
-            update(new Account(fromId, from));
-            update(new Account(toId, to));
-            res = true;
+        Optional<Account> accFrom = getById(fromId);
+        Optional<Account> accTo = getById(toId);
+        if (accFrom.isPresent() && accTo.isPresent() && accFrom.get().amount() >= amount) {
+            res = update(new Account(fromId, accFrom.get().amount() - amount))
+            && update(new Account(toId, accTo.get().amount() + amount));
         }
         return res;
     }
