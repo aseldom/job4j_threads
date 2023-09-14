@@ -12,21 +12,10 @@ public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private final Queue<T> queue = new LinkedList<>();
 
-    private final int count;
-    @GuardedBy("this")
-    private boolean empty = true;
-    @GuardedBy("this")
-    private boolean full = false;
+    private final int total;
 
-    public SimpleBlockingQueue(int count) {
-        this.count = count;
-        check();
-    }
-
-    private synchronized void check() {
-        int size = getSize();
-        empty = size == 0;
-        full = size == count;
+    public SimpleBlockingQueue(int total) {
+        this.total = total;
     }
 
     public synchronized int getSize() {
@@ -34,20 +23,18 @@ public class SimpleBlockingQueue<T> {
     }
 
     public synchronized void offer(T value) throws InterruptedException {
-        while (full) {
+        while (getSize() == total) {
             wait();
         }
         queue.offer(value);
-        check();
         notifyAll();
     }
 
     public synchronized T poll() throws InterruptedException {
-        while (empty) {
+        while (getSize() == 0) {
             wait();
         }
         T e = queue.poll();
-        check();
         notifyAll();
         return e;
     }
