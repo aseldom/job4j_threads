@@ -13,8 +13,7 @@ public class SimpleBlockingQueueTest {
         final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
         Thread producer = new Thread(
-                () -> IntStream.range(0, 8).forEach(i ->
-                {
+                () -> IntStream.range(0, 8).forEach(i -> {
                     try {
                         queue.offer(i);
                     } catch (InterruptedException e) {
