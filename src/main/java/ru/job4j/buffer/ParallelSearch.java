@@ -18,7 +18,7 @@ public class ParallelSearch {
                 }
         );
         consumer.start();
-        new Thread(
+        final Thread producer = new Thread(
                 () -> {
                     for (int index = 0; index != 3; index++) {
                         try {
@@ -26,28 +26,16 @@ public class ParallelSearch {
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                     }
                 }
-                ).start();
-
-        while (true) {
-            boolean ended = false;
-            for (Thread t : Thread.getAllStackTraces().keySet()) {
-                if (t.getState() == Thread.State.TERMINATED) {
-                    ended = true;
-                    break;
-                }
-                Thread.sleep(100);
-            }
-            if (ended) {
-                consumer.interrupt();
-                break;
-            }
-        }
+                );
+        producer.start();
+        producer.join();
+        consumer.interrupt();
     }
 }
