@@ -14,7 +14,7 @@ public class ThreadPool {
         for (int i = 0; i < size; i++) {
             Thread thread = new Thread(() -> {
                 try {
-                    tasks.poll().run();
+                    new Thread(tasks.poll()).start();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
