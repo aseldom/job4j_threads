@@ -28,14 +28,14 @@ class ParallelSearchTest {
     }
 
     @Test
-    public void ParallelIntSearchThen3() {
+    public void parallelIntSearchThen3() {
         Integer[] s = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         ParallelSearch<Integer> ps = new ParallelSearch<>(s, 4, 0, s.length - 1);
         assertThat(ps.search()).isEqualTo(3);
     }
 
     @Test
-    public void ParallelIntSearchThenNotFinding() {
+    public void parallelIntSearchThenNotFinding() {
         Integer[] s = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         ParallelSearch<Integer> ps = new ParallelSearch<>(s, 99, 0, s.length - 1);
         assertThat(ps.search()).isEqualTo(-1);
