@@ -14,7 +14,7 @@ public class ThreadPool {
         for (int i = 0; i < size; i++) {
             Thread thread = new Thread(() -> {
                 try {
-                    new Thread(tasks.poll()).start();
+                    tasks.poll().run();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -38,7 +38,6 @@ public class ThreadPool {
         ThreadPool threadPool = new ThreadPool();
         for (int i = 0; i < threadPool.size; i++) {
             threadPool.work(() -> System.out.println("Runs thread"));
-
         }
     }
 }
