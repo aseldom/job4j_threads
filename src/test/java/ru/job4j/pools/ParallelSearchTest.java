@@ -8,37 +8,42 @@ class ParallelSearchTest {
 
     @Test
     public void linearStringSearchThen4() {
-        String[] s = {"d", "a", "a", "b", "c", "g"};
-        ParallelSearch<String> ps = new ParallelSearch<>(s, "c", 0, s.length - 1);
-        assertThat(ps.search()).isEqualTo(4);
+        String[] array = {"d", "a", "a", "b", "c", "g"};
+        int expected = 4;
+        int res = ParallelSearch.search(array, "c");
+        assertThat(res).isEqualTo(expected);
     }
 
     @Test
     public void linearStringSearchThenNotFinding() {
-        String[] s = {"d", "a", "a", "b", "g", "g"};
-        ParallelSearch<String> ps = new ParallelSearch<>(s, "c", 0, s.length - 1);
-        assertThat(ps.search()).isEqualTo(-1);
+        String[] array = {"d", "a", "a", "b", "g", "g"};
+        int expected = -1;
+        int res = ParallelSearch.search(array, "c");
+        assertThat(res).isEqualTo(expected);
     }
 
     @Test
     public void parallelStringSearchThen11() {
-        String[] s = {"we", "d", "a", "a", "b", "c", "g", "ee", "ww", "ww", "re", "get"};
-        ParallelSearch<String> ps = new ParallelSearch<>(s, "get", 0, s.length - 1);
-        assertThat(ps.search()).isEqualTo(11);
+        String[] array = {"we", "d", "a", "a", "b", "c", "g", "ee", "ww", "ww", "gs", "get"};
+        int expected = 11;
+        int res = ParallelSearch.search(array, "get");
+        assertThat(res).isEqualTo(expected);
     }
 
     @Test
     public void parallelIntSearchThen3() {
-        Integer[] s = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        ParallelSearch<Integer> ps = new ParallelSearch<>(s, 4, 0, s.length - 1);
-        assertThat(ps.search()).isEqualTo(3);
+        Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int expected = 3;
+        int res = ParallelSearch.search(array, 4);
+        assertThat(res).isEqualTo(expected);
     }
 
     @Test
     public void parallelIntSearchThenNotFinding() {
-        Integer[] s = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        ParallelSearch<Integer> ps = new ParallelSearch<>(s, 99, 0, s.length - 1);
-        assertThat(ps.search()).isEqualTo(-1);
+        Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int expected = -1;
+        int res = ParallelSearch.search(array, 99);
+        assertThat(res).isEqualTo(expected);
     }
 
 }
