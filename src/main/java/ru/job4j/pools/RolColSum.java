@@ -9,27 +9,6 @@ import java.util.concurrent.ExecutionException;
 public class RolColSum {
     private static final Logger LOG = LoggerFactory.getLogger(RolColSum.class.getName());
 
-    public static class Sums {
-        private int rowSum;
-        private int colSum;
-
-        public int getRowSum() {
-            return rowSum;
-        }
-
-        public void setRowSum(int rowSum) {
-            this.rowSum = rowSum;
-        }
-
-        public int getColSum() {
-            return colSum;
-        }
-
-        public void setColSum(int colSum) {
-            this.colSum = colSum;
-        }
-    }
-
     public static Sums[] sum(int[][] matrix) {
         int size = matrix.length;
         Sums[] sums = new Sums[size];
@@ -40,9 +19,7 @@ public class RolColSum {
                 rowSum += matrix[i][j];
                 columnSum += matrix[j][i];
             }
-           sums[i] = new Sums();
-           sums[i].setRowSum(rowSum);
-           sums[i].setColSum(columnSum);
+           sums[i] = new Sums(rowSum, columnSum);
         }
         return sums;
     }
@@ -68,9 +45,7 @@ public class RolColSum {
                 rowSum += matrix[i][j];
                 columnSum += matrix[j][i];
             }
-            Sums sums = new Sums();
-            sums.setRowSum(rowSum);
-            sums.setColSum(columnSum);
+            Sums sums = new Sums(rowSum, columnSum);
             LOG.info("Current thread - {}", Thread.currentThread().getName());
             return sums;
         });
