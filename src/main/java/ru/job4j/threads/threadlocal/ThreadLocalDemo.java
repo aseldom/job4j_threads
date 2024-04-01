@@ -10,7 +10,6 @@ public class ThreadLocalDemo {
         System.out.println(tl.get());
         first.start();
         second.start();
-        first.join();
-        second.join();
+
     }
 }

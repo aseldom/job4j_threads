@@ -17,6 +17,7 @@ public class CountBarrier {
 
     public void count() {
         synchronized (monitor) {
+            System.out.println(Thread.currentThread().getName() + " execute");
             count++;
             monitor.notifyAll();
         }
@@ -24,10 +25,12 @@ public class CountBarrier {
 
     public void await() {
         synchronized (monitor) {
-            while (!(count >= total)) {
+            System.out.println(Thread.currentThread().getName() + " get monitor");
+            while (count < total) {
                 try {
                     monitor.wait();
                     System.out.println(Thread.currentThread().getName() + " try notify");
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -36,10 +39,14 @@ public class CountBarrier {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         CountBarrier countBarrier = new CountBarrier(5);
-        Thread threadAwait = new Thread(countBarrier::await, "Thread-Await");
+        Thread threadAwait = new Thread(countBarrier::await, "Thread-Await-1");
+        Thread threadAwait2 = new Thread(countBarrier::await, "Thread-Await-2");
+        Thread threadAwait3 = new Thread(countBarrier::await, "Thread-Await-3");
         threadAwait.start();
+        threadAwait2.start();
+        threadAwait3.start();
         for (int i = 1; i <= countBarrier.total; i++) {
             Thread threadCount = new Thread(countBarrier::count);
             System.out.println(threadCount.getName());
@@ -50,5 +57,7 @@ public class CountBarrier {
                 throw new RuntimeException(e);
             }
         }
+        threadAwait.join();
+        threadAwait2.join();
     }
 }
